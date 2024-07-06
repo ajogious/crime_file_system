@@ -77,9 +77,16 @@ public class PostmortemDetailsManagement extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel.add(addButton, gbc);
 
-        JButton backButton = new JButton("Back");
+        JButton viewRecordsButton = new JButton("View Postmortem Records");
         gbc.gridx = 1;
         gbc.gridy = 4;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel.add(viewRecordsButton, gbc);
+
+        JButton backButton = new JButton("Back");
+        gbc.gridx = 1;
+        gbc.gridy = 5;
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel.add(backButton, gbc);
@@ -112,6 +119,11 @@ public class PostmortemDetailsManagement extends JFrame {
                 JOptionPane.showMessageDialog(null, "An error occurred while adding the postmortem details: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 ex.printStackTrace();
             }
+        });
+
+        viewRecordsButton.addActionListener(e -> {
+            new ViewPostmortemRecord().setVisible(true);
+            this.dispose();
         });
 
         backButton.addActionListener(e -> {
