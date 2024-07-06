@@ -35,7 +35,7 @@ public class ViewCasesPage extends JFrame {
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JPanel bottomPanel = new JPanel(new BorderLayout());
         JPanel paginationPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        
+
         searchField = new JTextField(20);
         searchButton = new JButton("Search");
         backButton = new JButton("Back");
@@ -53,7 +53,7 @@ public class ViewCasesPage extends JFrame {
         prevButton = new JButton("Previous");
         nextButton = new JButton("Next");
         pageLabel = new JLabel("Page: " + currentPage);
-        
+
         paginationPanel.add(prevButton);
         paginationPanel.add(pageLabel);
         paginationPanel.add(nextButton);
@@ -100,10 +100,10 @@ public class ViewCasesPage extends JFrame {
     private void loadCases(String searchTerm) {
         tableModel.setRowCount(0);
         try (Connection connection = DatabaseConnection.getConnection()) {
-            String query = "SELECT SQL_CALC_FOUND_ROWS * FROM cases WHERE case_details LIKE '%" + searchTerm + "%' " +
-                           "OR type_of_crime LIKE '%" + searchTerm + "%' " +
-                           "OR place_of_occurrence LIKE '%" + searchTerm + "%' " +
-                           "LIMIT " + (currentPage - 1) * pageSize + ", " + pageSize;
+            String query = "SELECT SQL_CALC_FOUND_ROWS * FROM cases WHERE case_details LIKE '%" + searchTerm + "%' "
+                    + "OR type_of_crime LIKE '%" + searchTerm + "%' "
+                    + "OR place_of_occurrence LIKE '%" + searchTerm + "%' "
+                    + "LIMIT " + (currentPage - 1) * pageSize + ", " + pageSize;
 
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
@@ -133,7 +133,4 @@ public class ViewCasesPage extends JFrame {
         pageLabel.setText("Page: " + currentPage + " / " + ((totalRows / pageSize) + 1));
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new ViewCasesPage().setVisible(true));
-    }
 }

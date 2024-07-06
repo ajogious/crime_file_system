@@ -133,15 +133,5 @@ public class FIRManagement extends JFrame {
             this.dispose();
         });
     }
-
-    public static void main(String[] args) {
-        // Use a more modern look and feel
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        SwingUtilities.invokeLater(() -> new FIRManagement().setVisible(true));
-    }
+    
 }

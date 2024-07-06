@@ -126,7 +126,4 @@ public class PrisonerRegisterManagement extends JFrame {
         });
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new PrisonerRegisterManagement().setVisible(true));
-    }
 }

@@ -2,8 +2,6 @@ package crime_file_system_files;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -153,7 +151,7 @@ public class ViewComplaintStatus extends JFrame {
                 String status = resultSet.getString("status");
                 String details = resultSet.getString("crime_details");
                 resultArea.setText("Complaint ID: " + complaintID + "\nStatus: " + status + "\nDetails: " + details);
-            
+
                 // Now the complaint is treated, so hide the treat button
                 treatButton.setVisible(false);
             }
@@ -163,7 +161,4 @@ public class ViewComplaintStatus extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new ViewComplaintStatus().setVisible(true));
-    }
 }

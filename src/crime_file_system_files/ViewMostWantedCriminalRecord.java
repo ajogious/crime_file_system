@@ -3,8 +3,6 @@ package crime_file_system_files;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -106,8 +104,5 @@ public class ViewMostWantedCriminalRecord extends JFrame {
             JOptionPane.showMessageDialog(this, "Failed to load records", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new ViewMostWantedCriminalRecord().setVisible(true));
-    }
+    
 }

@@ -164,14 +164,14 @@ public class ViewFirRecord extends JFrame {
         nextButton.setEnabled(currentPage < totalPages);
     }
 
-    public static void main(String[] args) {
-        // Use a more modern look and feel
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        SwingUtilities.invokeLater(() -> new ViewFirRecord().setVisible(true));
-    }
+//    public static void main(String[] args) {
+//        // Use a more modern look and feel
+//        try {
+//            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        SwingUtilities.invokeLater(() -> new ViewFirRecord().setVisible(true));
+//    }
 }

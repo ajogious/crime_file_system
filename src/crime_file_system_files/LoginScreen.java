@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+// Import your JDBC package here
 import jdbc.DatabaseConnection;
 
 public class LoginScreen extends JFrame {
@@ -16,7 +17,7 @@ public class LoginScreen extends JFrame {
     public LoginScreen() {
         // Frame settings
         setTitle("Crime File System - Login");
-        setSize(400, 200);
+        setSize(400, 250);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -34,14 +35,21 @@ public class LoginScreen extends JFrame {
         usernameLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         usernameText = new JTextField();
         usernameText.setFont(new Font("Arial", Font.PLAIN, 14));
+        
         JLabel passwordLabel = new JLabel("Password:");
         passwordLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         passwordText = new JPasswordField();
         passwordText.setFont(new Font("Arial", Font.PLAIN, 14));
+        
         JButton loginButton = new JButton("Login");
         loginButton.setFont(new Font("Arial", Font.BOLD, 14));
         loginButton.setBackground(new Color(0, 123, 255));
         loginButton.setForeground(Color.WHITE);
+        
+        JButton registerButton = new JButton("Register");
+        registerButton.setFont(new Font("Arial", Font.BOLD, 14));
+        registerButton.setBackground(new Color(40, 167, 69));
+        registerButton.setForeground(Color.WHITE);
 
         // Adding components to panel with GridBagLayout
         gbc.gridx = 0;
@@ -63,11 +71,15 @@ public class LoginScreen extends JFrame {
         gbc.gridx = 1;
         gbc.gridy = 2;
         panel.add(loginButton, gbc);
+        
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        panel.add(registerButton, gbc);
 
         // Add panel to frame
         add(panel);
 
-        // Button action
+        // Button actions
         loginButton.addActionListener(e -> {
             String username = usernameText.getText();
             String password = new String(passwordText.getPassword());
@@ -79,6 +91,11 @@ public class LoginScreen extends JFrame {
             } else {
                 JOptionPane.showMessageDialog(null, "Invalid username or password");
             }
+        });
+        
+        registerButton.addActionListener(e -> {
+            new RegistrationForm().setVisible(true);
+            this.dispose(); // close the login window
         });
     }
 
@@ -98,8 +115,5 @@ public class LoginScreen extends JFrame {
         }
         return false;
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new LoginScreen().setVisible(true));
-    }
+    
 }

@@ -164,7 +164,4 @@ public class ViewPostmortemRecord extends JFrame {
         nextButton.setEnabled(currentPage < totalPages);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new ViewPostmortemRecord().setVisible(true));
-    }
 }

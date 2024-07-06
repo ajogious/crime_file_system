@@ -1,23 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package crime_file_system_files;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import javax.swing.JFormattedTextField;
 import javax.swing.JFormattedTextField.AbstractFormatter;
 
-/**
- *
- * @author Administrator
- */
 class DateLabelFormatter extends AbstractFormatter {
 
-     private String datePattern = "yyyy-MM-dd";
+    private String datePattern = "yyyy-MM-dd";
     private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
 
     @Override
@@ -34,5 +24,5 @@ class DateLabelFormatter extends AbstractFormatter {
 
         return "";
     }
-    
+
 }

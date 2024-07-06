@@ -15,8 +15,8 @@ public class AdminUserPage extends JFrame {
 
         // Panel and layout
         JPanel panel = new JPanel();
-        panel.setBorder(new EmptyBorder(10, 10, 10, 10)); // Padding around the panel
-        panel.setLayout(new GridLayout(8, 1, 10, 10)); // Adding spacing between buttons
+        panel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        panel.setLayout(new GridLayout(8, 1, 10, 10));
 
         // Components
         JButton criminalButton = createStyledButton("Criminal Management");
@@ -44,7 +44,7 @@ public class AdminUserPage extends JFrame {
         // Button actions
         criminalButton.addActionListener(e -> {
             new CriminalRegisterManagement().setVisible(true);
-            this.dispose(); // close the current window
+            this.dispose();
         });
 
         firButton.addActionListener(e -> {
@@ -93,7 +93,4 @@ public class AdminUserPage extends JFrame {
         return button;
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new AdminUserPage().setVisible(true));
-    }
 }

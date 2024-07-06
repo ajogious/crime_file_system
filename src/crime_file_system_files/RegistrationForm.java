@@ -37,37 +37,42 @@ public class RegistrationForm extends JFrame {
         fullNameLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         fullNameText = new JTextField();
         fullNameText.setFont(new Font("Arial", Font.PLAIN, 14));
-        
+
         JLabel rankLabel = new JLabel("Rank:");
         rankLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         rankText = new JTextField();
         rankText.setFont(new Font("Arial", Font.PLAIN, 14));
-        
+
         JLabel usernameLabel = new JLabel("Username:");
         usernameLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         usernameText = new JTextField();
         usernameText.setFont(new Font("Arial", Font.PLAIN, 14));
-        
+
         JLabel phoneNumberLabel = new JLabel("Phone Number:");
         phoneNumberLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         phoneNumberText = new JTextField();
         phoneNumberText.setFont(new Font("Arial", Font.PLAIN, 14));
-        
+
         JLabel passwordLabel = new JLabel("Password:");
         passwordLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         passwordText = new JPasswordField();
         passwordText.setFont(new Font("Arial", Font.PLAIN, 14));
-        
+
         JButton registerButton = new JButton("Register");
         registerButton.setFont(new Font("Arial", Font.BOLD, 14));
         registerButton.setBackground(new Color(0, 123, 255));
         registerButton.setForeground(Color.WHITE);
 
+        JButton loginButton = new JButton("Login");
+        loginButton.setFont(new Font("Arial", Font.BOLD, 14));
+        loginButton.setBackground(new Color(40, 167, 69));
+        loginButton.setForeground(Color.WHITE);
+
         // Adding components to panel with GridBagLayout
         gbc.gridx = 0;
         gbc.gridy = 0;
         panel.add(fullNameLabel, gbc);
-        
+
         gbc.gridx = 1;
         gbc.gridy = 0;
         panel.add(fullNameText, gbc);
@@ -75,7 +80,7 @@ public class RegistrationForm extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 1;
         panel.add(rankLabel, gbc);
-        
+
         gbc.gridx = 1;
         gbc.gridy = 1;
         panel.add(rankText, gbc);
@@ -83,7 +88,7 @@ public class RegistrationForm extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 2;
         panel.add(usernameLabel, gbc);
-        
+
         gbc.gridx = 1;
         gbc.gridy = 2;
         panel.add(usernameText, gbc);
@@ -91,7 +96,7 @@ public class RegistrationForm extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 3;
         panel.add(phoneNumberLabel, gbc);
-        
+
         gbc.gridx = 1;
         gbc.gridy = 3;
         panel.add(phoneNumberText, gbc);
@@ -99,19 +104,23 @@ public class RegistrationForm extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 4;
         panel.add(passwordLabel, gbc);
-        
+
         gbc.gridx = 1;
         gbc.gridy = 4;
         panel.add(passwordText, gbc);
 
-        gbc.gridx = 1;
+        gbc.gridx = 0;
         gbc.gridy = 5;
         panel.add(registerButton, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 6;
+        panel.add(loginButton, gbc);
 
         // Add panel to frame
         add(panel);
 
-        // Button action
+        // Button actions
         registerButton.addActionListener(e -> {
             String fullName = fullNameText.getText();
             String rank = rankText.getText();
@@ -131,6 +140,11 @@ public class RegistrationForm extends JFrame {
 
             registerUser(fullName, rank, username, phoneNumber, password);
         });
+
+        loginButton.addActionListener(e -> {
+            new LoginScreen().setVisible(true);
+            this.dispose();
+        });
     }
 
     private boolean usernameExists(String username) {
@@ -139,7 +153,6 @@ public class RegistrationForm extends JFrame {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, username);
             ResultSet resultSet = preparedStatement.executeQuery();
-
             return resultSet.next();
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -155,14 +168,14 @@ public class RegistrationForm extends JFrame {
             preparedStatement.setString(2, rank);
             preparedStatement.setString(3, username);
             preparedStatement.setString(4, phoneNumber);
-            preparedStatement.setString(5, password); // Store hashed password in a real application
+            preparedStatement.setString(5, password); 
             preparedStatement.setString(6, "Normal User");
 
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0) {
                 JOptionPane.showMessageDialog(null, "Registration successful", "Success", JOptionPane.INFORMATION_MESSAGE);
                 new LoginScreen().setVisible(true);
-                this.dispose(); // close the registration form
+                this.dispose(); 
             } else {
                 JOptionPane.showMessageDialog(null, "Failed to register user", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -172,7 +185,4 @@ public class RegistrationForm extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new RegistrationForm().setVisible(true));
-    }
 }
