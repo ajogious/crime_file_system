@@ -9,7 +9,6 @@ import jdbc.DatabaseConnection;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.SqlDateModel;
-
 import java.util.Properties;
 
 public class FIRManagement extends JFrame {
@@ -22,15 +21,21 @@ public class FIRManagement extends JFrame {
         setLocationRelativeTo(null);
 
         // Panel and layout
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(5, 2));
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        JPanel formPanel = new JPanel(new GridBagLayout());
+        formPanel.setBorder(BorderFactory.createTitledBorder("FIR Details"));
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
         // Components
         JLabel crimeDetailsLabel = new JLabel("Crime Details:");
-        JTextField crimeDetailsText = new JTextField();
-        JLabel dateLabel = new JLabel("Date of Occurrence:");
+        JTextField crimeDetailsText = new JTextField(20);
 
-        // Date Picker
+        JLabel dateLabel = new JLabel("Date of Occurrence:");
         SqlDateModel model = new SqlDateModel();
         Properties p = new Properties();
         p.put("text.today", "Today");
@@ -40,24 +45,50 @@ public class FIRManagement extends JFrame {
         JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
 
         JLabel placeLabel = new JLabel("Place of Occurrence:");
-        JTextField placeText = new JTextField();
+        JTextField placeText = new JTextField(20);
+
         JButton addButton = new JButton("Add FIR");
         JButton backButton = new JButton("Back to Admin Page");
 
-        // Adding components to panel
-        panel.add(crimeDetailsLabel);
-        panel.add(crimeDetailsText);
-        panel.add(dateLabel);
-        panel.add(datePicker);
-        panel.add(placeLabel);
-        panel.add(placeText);
-        panel.add(new JLabel()); // empty cell
-        panel.add(addButton);
-        panel.add(new JLabel()); // empty cell
-        panel.add(backButton);
+        // Adding components to panel with layout constraints
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        formPanel.add(crimeDetailsLabel, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        formPanel.add(crimeDetailsText, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        formPanel.add(dateLabel, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        formPanel.add(datePicker, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        formPanel.add(placeLabel, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        formPanel.add(placeText, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        gbc.anchor = GridBagConstraints.LINE_START;
+        formPanel.add(addButton, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 4;
+        gbc.anchor = GridBagConstraints.LINE_START;
+        formPanel.add(backButton, gbc);
+
+        mainPanel.add(formPanel, BorderLayout.CENTER);
 
         // Add panel to frame
-        add(panel);
+        add(mainPanel);
 
         // Button action
         addButton.addActionListener(e -> {
@@ -86,6 +117,13 @@ public class FIRManagement extends JFrame {
     }
 
     public static void main(String[] args) {
+        // Use a more modern look and feel
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         SwingUtilities.invokeLater(() -> new FIRManagement().setVisible(true));
     }
 }

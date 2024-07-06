@@ -1,11 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package crime_file_system_files;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class AdminPage extends JFrame {
@@ -13,23 +9,24 @@ public class AdminPage extends JFrame {
     public AdminPage() {
         // Frame settings
         setTitle("Crime File System - Admin Page");
-        setSize(400, 300);
+        setSize(400, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
         // Panel and layout
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(5, 1));
+        panel.setBorder(new EmptyBorder(10, 10, 10, 10)); // Padding around the panel
+        panel.setLayout(new GridLayout(8, 1, 10, 10)); // Adding spacing between buttons
 
         // Components
-        JButton criminalButton = new JButton("Criminal Management");
-        JButton firButton = new JButton("FIR Management");
-        JButton caseHistoryButton = new JButton("Case History Management");
-        JButton postmortemButton = new JButton("Postmortem Management");
-        JButton prisonerButton = new JButton("Prisoner Management");
-        JButton mostWantedButton = new JButton("Most Wanted Criminals Management");
-        JButton viewComplaintStatusButton = new JButton("View Complaint Status");
-        JButton complaintRegistration = new JButton("Complain Registration");
+        JButton criminalButton = createStyledButton("Criminal Management");
+        JButton firButton = createStyledButton("FIR Management");
+        JButton caseHistoryButton = createStyledButton("Case History Management");
+        JButton postmortemButton = createStyledButton("Postmortem Management");
+        JButton prisonerButton = createStyledButton("Prisoner Management");
+        JButton mostWantedButton = createStyledButton("Most Wanted Criminals Management");
+        JButton viewComplaintStatusButton = createStyledButton("View Complaint Status");
+        JButton complaintRegistration = createStyledButton("Complain Registration");
 
         // Adding components to panel
         panel.add(criminalButton);
@@ -84,6 +81,16 @@ public class AdminPage extends JFrame {
             new ComplaintRegistration().setVisible(true);
             this.dispose();
         });
+    }
+
+    private JButton createStyledButton(String text) {
+        JButton button = new JButton(text);
+        button.setFocusPainted(false);
+        button.setBackground(new Color(60, 63, 65));
+        button.setForeground(Color.WHITE);
+        button.setFont(new Font("Arial", Font.BOLD, 12));
+        button.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
+        return button;
     }
 
     public static void main(String[] args) {

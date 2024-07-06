@@ -5,11 +5,10 @@ import java.awt.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import org.jdatepicker.JDatePicker;
+import java.util.Properties;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.SqlDateModel;
-import java.util.Properties;
 import jdbc.DatabaseConnection;
 
 public class CaseHistoryDetailsManagement extends JFrame {
@@ -20,15 +19,18 @@ public class CaseHistoryDetailsManagement extends JFrame {
         setSize(600, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        
+
         // Panel and layout
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(6, 2));
+        JPanel panel = new JPanel(new GridBagLayout());
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
         // Components
         JLabel caseDetailsLabel = new JLabel("Case Details:");
-        JTextField caseDetailsText = new JTextField("Enter details of case(s): ");
-        
+        JTextField caseDetailsText = new JTextField(20);
+
         JLabel dateLabel = new JLabel("Date of Occurrence:");
 
         // Date picker components
@@ -39,27 +41,51 @@ public class CaseHistoryDetailsManagement extends JFrame {
         p.put("text.year", "Year");
         JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
         JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
-        
-        JLabel crimeTypeLabel = new JLabel("Type of Crime: ");
-        JTextField crimeTypeText = new JTextField("Enter type(s) of crime:");
+
+        JLabel crimeTypeLabel = new JLabel("Type of Crime:");
+        JTextField crimeTypeText = new JTextField(20);
         JLabel placeLabel = new JLabel("Place of Occurrence:");
-        JTextField placeText = new JTextField("Enter place of occurrence: ");
+        JTextField placeText = new JTextField(20);
         JButton addButton = new JButton("Add Case");
         JButton backButton = new JButton("Back to Admin Page");
 
         // Adding components to panel
-        panel.add(caseDetailsLabel);
-        panel.add(caseDetailsText);
-        panel.add(dateLabel);
-        panel.add(datePicker);
-        panel.add(crimeTypeLabel);
-        panel.add(crimeTypeText);
-        panel.add(placeLabel);
-        panel.add(placeText);
-        panel.add(new JLabel()); // empty cell
-        panel.add(addButton);
-        panel.add(new JLabel()); // empty cell
-        panel.add(backButton);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panel.add(caseDetailsLabel, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        panel.add(caseDetailsText, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        panel.add(dateLabel, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        panel.add(datePicker, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        panel.add(crimeTypeLabel, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        panel.add(crimeTypeText, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        panel.add(placeLabel, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        panel.add(placeText, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 4;
+        gbc.anchor = GridBagConstraints.CENTER;
+        panel.add(addButton, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 5;
+        panel.add(backButton, gbc);
 
         // Add panel to frame
         add(panel);
@@ -85,7 +111,7 @@ public class CaseHistoryDetailsManagement extends JFrame {
                 ex.printStackTrace();
             }
         });
-        
+
         backButton.addActionListener(e -> {
             new AdminPage().setVisible(true);
             this.dispose();

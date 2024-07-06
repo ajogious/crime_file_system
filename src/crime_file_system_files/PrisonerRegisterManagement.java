@@ -20,10 +20,21 @@ public class PrisonerRegisterManagement extends JFrame {
         setSize(600, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
 
-        // Panel and layout
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(5, 2));
+        // Main panel with border
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout(10, 10));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        // Title label
+        JLabel titleLabel = new JLabel("Prisoner Register Management", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Serif", Font.BOLD, 20));
+        mainPanel.add(titleLabel, BorderLayout.NORTH);
+
+        // Form panel
+        JPanel formPanel = new JPanel();
+        formPanel.setLayout(new GridLayout(4, 2, 10, 10));
 
         // Components
         JLabel nameLabel = new JLabel("Name:");
@@ -50,23 +61,30 @@ public class PrisonerRegisterManagement extends JFrame {
         JDatePanelImpl releaseDatePanel = new JDatePanelImpl(releaseModel, releaseProps);
         JDatePickerImpl releaseDatePicker = new JDatePickerImpl(releaseDatePanel, new DateLabelFormatter());
 
+        // Adding components to form panel
+        formPanel.add(nameLabel);
+        formPanel.add(nameText);
+        formPanel.add(imprisonmentDateLabel);
+        formPanel.add(imprisonmentDatePicker);
+        formPanel.add(releaseDateLabel);
+        formPanel.add(releaseDatePicker);
+
+        mainPanel.add(formPanel, BorderLayout.CENTER);
+
+        // Button panel
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+
         JButton addButton = new JButton("Add Prisoner");
         JButton backButton = new JButton("Back to Admin Page");
 
-        // Adding components to panel
-        panel.add(nameLabel);
-        panel.add(nameText);
-        panel.add(imprisonmentDateLabel);
-        panel.add(imprisonmentDatePicker);
-        panel.add(releaseDateLabel);
-        panel.add(releaseDatePicker);
-        panel.add(new JLabel()); // empty cell
-        panel.add(addButton);
-        panel.add(new JLabel()); // empty cell
-        panel.add(backButton);
+        buttonPanel.add(addButton);
+        buttonPanel.add(backButton);
 
-        // Add panel to frame
-        add(panel);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        // Add main panel to frame
+        add(mainPanel);
 
         // Button action
         addButton.addActionListener(e -> {

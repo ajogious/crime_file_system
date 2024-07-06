@@ -22,12 +22,18 @@ public class PostmortemDetailsManagement extends JFrame {
         setLocationRelativeTo(null);
 
         // Panel and layout
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(5, 2));
+        JPanel panel = new JPanel(new GridBagLayout());
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
 
         // Components
         JLabel dateLabel = new JLabel("Date of Death:");
-        
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.LINE_END;
+        panel.add(dateLabel, gbc);
+
         // Date Picker
         SqlDateModel model = new SqlDateModel();
         Properties p = new Properties();
@@ -36,30 +42,53 @@ public class PostmortemDetailsManagement extends JFrame {
         p.put("text.year", "Year");
         JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
         JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.LINE_START;
+        panel.add(datePicker, gbc);
 
         JLabel causeLabel = new JLabel("Cause of Death:");
-        JTextField causeText = new JTextField();
-        JLabel doctorLabel = new JLabel("Doctor Name:");
-        JTextField doctorText = new JTextField();
-        JButton addButton = new JButton("Add Postmortem");
-        JButton backButton = new JButton("Back to Admin Page");
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.anchor = GridBagConstraints.LINE_END;
+        panel.add(causeLabel, gbc);
 
-        // Adding components to panel
-        panel.add(dateLabel);
-        panel.add(datePicker);
-        panel.add(causeLabel);
-        panel.add(causeText);
-        panel.add(doctorLabel);
-        panel.add(doctorText);
-        panel.add(new JLabel()); // empty cell
-        panel.add(addButton);
-        panel.add(new JLabel()); // empty cell
-        panel.add(backButton);
+        JTextField causeText = new JTextField(15);
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.anchor = GridBagConstraints.LINE_START;
+        panel.add(causeText, gbc);
+
+        JLabel doctorLabel = new JLabel("Doctor Name:");
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.anchor = GridBagConstraints.LINE_END;
+        panel.add(doctorLabel, gbc);
+
+        JTextField doctorText = new JTextField(15);
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        gbc.anchor = GridBagConstraints.LINE_START;
+        panel.add(doctorText, gbc);
+
+        JButton addButton = new JButton("Add Postmortem");
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel.add(addButton, gbc);
+
+        JButton backButton = new JButton("Back to Admin Page");
+        gbc.gridx = 1;
+        gbc.gridy = 4;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel.add(backButton, gbc);
 
         // Add panel to frame
         add(panel);
 
-        // Button action
+        // Button actions
         addButton.addActionListener(e -> {
             java.sql.Date dateOfDeath = (java.sql.Date) datePicker.getModel().getValue();
             String causeOfDeath = causeText.getText();

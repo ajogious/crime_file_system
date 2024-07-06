@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package crime_file_system_files;
 
 import javax.swing.*;
@@ -28,10 +23,28 @@ public class ViewComplaintStatus extends JFrame {
 
         // Components
         JLabel searchLabel = new JLabel("Enter Complaint ID:");
-        JTextField searchText = new JTextField();
+        JTextField searchText = new JTextField("Enter Complaint ID");
         JButton searchButton = new JButton("Search");
         JTextArea resultArea = new JTextArea();
         JButton backButton = new JButton("Back to Admin Page");
+
+        // Placeholder text setup
+        searchText.setForeground(Color.GRAY);
+        searchText.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                if (searchText.getText().equals("Enter Complaint ID")) {
+                    searchText.setText("");
+                    searchText.setForeground(Color.BLACK);
+                }
+            }
+
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                if (searchText.getText().isEmpty()) {
+                    searchText.setForeground(Color.GRAY);
+                    searchText.setText("Enter Complaint ID");
+                }
+            }
+        });
 
         // Search panel
         JPanel searchPanel = new JPanel();
@@ -56,7 +69,11 @@ public class ViewComplaintStatus extends JFrame {
         // Button actions
         searchButton.addActionListener(e -> {
             String complaintID = searchText.getText();
-            System.out.println(complaintID);
+
+            if (complaintID.equals("Enter Complaint ID") || complaintID.trim().isEmpty()) {
+                resultArea.setText("Please enter a valid complaint ID.");
+                return;
+            }
 
             try (Connection connection = DatabaseConnection.getConnection()) {
                 String query = "SELECT * FROM complaints WHERE complaint_id = ?";
@@ -68,13 +85,10 @@ public class ViewComplaintStatus extends JFrame {
                     String status = resultSet.getString("status");
                     String details = resultSet.getString("crime_details");
                     resultArea.setText("Complaint ID: " + complaintID + "\nStatus: " + status + "\nDetails: " + details);
-
                 } else {
                     resultArea.setText("No complaint found with ID: " + complaintID);
-                    System.out.println(complaintID + 100);
                 }
             } catch (SQLException ex) {
-                ex.printStackTrace();
                 resultArea.setText("Error retrieving complaint status.");
             }
         });

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package crime_file_system_files;
 
 import javax.swing.*;
@@ -15,34 +10,59 @@ import jdbc.DatabaseConnection;
 
 public class LoginScreen extends JFrame {
 
-     private JTextField usernameText;
+    private JTextField usernameText;
     private JPasswordField passwordText;
 
     public LoginScreen() {
         // Frame settings
         setTitle("Crime File System - Login");
-        setSize(300, 150);
+        setSize(400, 200);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        
+
         // Panel and layout
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(3, 2));
+        panel.setLayout(new GridBagLayout());
+        panel.setBackground(new Color(245, 245, 245));
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
         // Components
         JLabel usernameLabel = new JLabel("Username:");
+        usernameLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         usernameText = new JTextField();
+        usernameText.setFont(new Font("Arial", Font.PLAIN, 14));
         JLabel passwordLabel = new JLabel("Password:");
+        passwordLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         passwordText = new JPasswordField();
+        passwordText.setFont(new Font("Arial", Font.PLAIN, 14));
         JButton loginButton = new JButton("Login");
+        loginButton.setFont(new Font("Arial", Font.BOLD, 14));
+        loginButton.setBackground(new Color(0, 123, 255));
+        loginButton.setForeground(Color.WHITE);
 
-        // Adding components to panel
-        panel.add(usernameLabel);
-        panel.add(usernameText);
-        panel.add(passwordLabel);
-        panel.add(passwordText);
-        panel.add(new JLabel()); // empty cell
-        panel.add(loginButton);
+        // Adding components to panel with GridBagLayout
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panel.add(usernameLabel, gbc);
+        
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        panel.add(usernameText, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        panel.add(passwordLabel, gbc);
+        
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        panel.add(passwordText, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        panel.add(loginButton, gbc);
 
         // Add panel to frame
         add(panel);

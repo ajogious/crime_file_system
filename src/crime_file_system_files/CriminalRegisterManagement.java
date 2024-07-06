@@ -1,11 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package crime_file_system_files;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,40 +17,77 @@ public class CriminalRegisterManagement extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // Panel and layout
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(5, 2));
+        // Main panel with padding
+        JPanel mainPanel = new JPanel();
+        mainPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
+        mainPanel.setLayout(new BorderLayout());
 
-        // Components
-        JLabel criminalNumberLabel = new JLabel("Criminal Number:");
-        JTextField criminalNumberText = new JTextField();
-        JLabel ageLabel = new JLabel("Age:");
-        JTextField ageText = new JTextField();
-        JLabel occupationLabel = new JLabel("Occupation:");
-        JTextField occupationText = new JTextField();
-        JLabel crimeTypeLabel = new JLabel("Type of Crime:");
-        JTextField crimeTypeText = new JTextField();
+        // Title
+        JLabel titleLabel = new JLabel("Criminal Register Management", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Serif", Font.BOLD, 20));
+        mainPanel.add(titleLabel, BorderLayout.NORTH);
+
+        // Form panel
+        JPanel formPanel = new JPanel();
+        formPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        // Criminal number
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        formPanel.add(new JLabel("Criminal Number:"), gbc);
+
+        gbc.gridx = 1;
+        JTextField criminalNumberText = new JTextField(20);
+        formPanel.add(criminalNumberText, gbc);
+
+        // Age
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        formPanel.add(new JLabel("Age:"), gbc);
+
+        gbc.gridx = 1;
+        JTextField ageText = new JTextField(20);
+        formPanel.add(ageText, gbc);
+
+        // Occupation
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        formPanel.add(new JLabel("Occupation:"), gbc);
+
+        gbc.gridx = 1;
+        JTextField occupationText = new JTextField(20);
+        formPanel.add(occupationText, gbc);
+
+        // Type of crime
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        formPanel.add(new JLabel("Type of Crime:"), gbc);
+
+        gbc.gridx = 1;
+        JTextField crimeTypeText = new JTextField(20);
+        formPanel.add(crimeTypeText, gbc);
+
+        mainPanel.add(formPanel, BorderLayout.CENTER);
+
+        // Button panel
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+
         JButton addButton = new JButton("Add Criminal");
         JButton backButton = new JButton("Back to Admin Page");
 
-        // Adding components to panel
-        panel.add(criminalNumberLabel);
-        panel.add(criminalNumberText);
-        panel.add(ageLabel);
-        panel.add(ageText);
-        panel.add(occupationLabel);
-        panel.add(occupationText);
-        panel.add(crimeTypeLabel);
-        panel.add(crimeTypeText);
-        panel.add(new JLabel()); // empty cell
-        panel.add(addButton);
-        panel.add(new JLabel()); // empty cell
-        panel.add(backButton);
+        buttonPanel.add(addButton);
+        buttonPanel.add(backButton);
 
-        // Add panel to frame
-        add(panel);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
-        // Button action
+        // Add main panel to frame
+        add(mainPanel);
+
+        // Button actions
         addButton.addActionListener(e -> {
             String criminalNumber = criminalNumberText.getText();
             int age = Integer.parseInt(ageText.getText());

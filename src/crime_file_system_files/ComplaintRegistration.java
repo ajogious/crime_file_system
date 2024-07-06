@@ -1,11 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package crime_file_system_files;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,31 +17,63 @@ public class ComplaintRegistration extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // Panel and layout
+        // Main panel with padding
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(5, 2));
+        panel.setBorder(new EmptyBorder(15, 15, 15, 15));
+        panel.setLayout(new BorderLayout());
 
-        // Components
-        JLabel incidentLabel = new JLabel("Incident Details:");
-        JTextField incidentText = new JTextField();
-        JLabel victimLabel = new JLabel("Victim Details:");
-        JTextField victimText = new JTextField();
-        JLabel crimeLabel = new JLabel("Crime Details:");
-        JTextField crimeText = new JTextField();
+        // Title
+        JLabel titleLabel = new JLabel("Register Complaint", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Serif", Font.BOLD, 20));
+        panel.add(titleLabel, BorderLayout.NORTH);
+
+        // Form panel
+        JPanel formPanel = new JPanel();
+        formPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        // Incident details
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        formPanel.add(new JLabel("Incident Details:"), gbc);
+
+        gbc.gridx = 1;
+        JTextField incidentText = new JTextField(20);
+        formPanel.add(incidentText, gbc);
+
+        // Victim details
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        formPanel.add(new JLabel("Victim Details:"), gbc);
+
+        gbc.gridx = 1;
+        JTextField victimText = new JTextField(20);
+        formPanel.add(victimText, gbc);
+
+        // Crime details
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        formPanel.add(new JLabel("Crime Details:"), gbc);
+
+        gbc.gridx = 1;
+        JTextField crimeText = new JTextField(20);
+        formPanel.add(crimeText, gbc);
+
+        panel.add(formPanel, BorderLayout.CENTER);
+
+        // Button panel
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+
         JButton registerButton = new JButton("Register");
         JButton backButton = new JButton("Back to Admin Page");
 
-        // Adding components to panel
-        panel.add(incidentLabel);
-        panel.add(incidentText);
-        panel.add(victimLabel);
-        panel.add(victimText);
-        panel.add(crimeLabel);
-        panel.add(crimeText);
-        panel.add(new JLabel()); // empty cell
-        panel.add(registerButton);
-        panel.add(new JLabel()); // empty cell
-        panel.add(backButton);
+        buttonPanel.add(registerButton);
+        buttonPanel.add(backButton);
+
+        panel.add(buttonPanel, BorderLayout.SOUTH);
 
         // Add panel to frame
         add(panel);
