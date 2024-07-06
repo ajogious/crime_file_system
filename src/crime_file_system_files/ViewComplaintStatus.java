@@ -94,7 +94,7 @@ public class ViewComplaintStatus extends JFrame {
         });
 
         backButton.addActionListener(e -> {
-            new AdminPage().setVisible(true);
+            new AdminUserPage().setVisible(true);
             this.dispose();
         });
     }

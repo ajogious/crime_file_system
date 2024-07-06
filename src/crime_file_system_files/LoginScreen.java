@@ -74,7 +74,7 @@ public class LoginScreen extends JFrame {
 
             if (authenticate(username, password)) {
                 JOptionPane.showMessageDialog(null, "Login successful");
-                new AdminPage().setVisible(true);
+                new AdminUserPage().setVisible(true);
                 this.dispose(); // close the login window
             } else {
                 JOptionPane.showMessageDialog(null, "Invalid username or password");
