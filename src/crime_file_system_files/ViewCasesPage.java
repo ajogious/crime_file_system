@@ -1,119 +1,136 @@
 package crime_file_system_files;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import jdbc.DatabaseConnection;
 
 public class ViewCasesPage extends JFrame {
-    private static final int CASES_PER_PAGE = 10; // Number of cases per page
-    private int currentPage = 1; // Current page number
-    private JPanel casesPanel;
+
     private JTextField searchField;
-    private String searchQuery = ""; // Search query string
+    private JButton searchButton;
+    private JButton backButton;
+    private JTable casesTable;
+    private DefaultTableModel tableModel;
+    private int currentPage = 1;
+    private int totalRows = 0;
+    private int pageSize = 10;
+    private JLabel pageLabel;
+    private JButton prevButton;
+    private JButton nextButton;
 
     public ViewCasesPage() {
         // Frame settings
-        setTitle("Crime File System - View Cases");
+        setTitle("View Cases");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
         // Panel and layout
-        casesPanel = new JPanel();
-        casesPanel.setLayout(new BoxLayout(casesPanel, BoxLayout.Y_AXIS));
-        JScrollPane scrollPane = new JScrollPane(casesPanel);
-
+        JPanel panel = new JPanel(new BorderLayout(10, 10));
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel bottomPanel = new JPanel(new BorderLayout());
+        JPanel paginationPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        
         searchField = new JTextField(20);
-        searchField.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                searchQuery = searchField.getText();
-                currentPage = 1; // Reset to first page on new search
-                loadCases();
-            }
-        });
+        searchButton = new JButton("Search");
+        backButton = new JButton("Back");
 
-        JButton previousButton = new JButton("Previous");
-        JButton nextButton = new JButton("Next");
-        JButton backButton = new JButton("Back");
+        casesTable = new JTable();
+        tableModel = new DefaultTableModel(new Object[]{"Case ID", "Case Details", "Date of Occurrence", "Crime Type", "Place of Occurrence"}, 0);
+        casesTable.setModel(tableModel);
 
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.add(previousButton);
-        buttonPanel.add(nextButton);
-        buttonPanel.add(backButton);
+        JScrollPane tableScrollPane = new JScrollPane(casesTable);
 
-        JPanel searchPanel = new JPanel(new BorderLayout());
-        searchPanel.add(new JLabel("Search: "), BorderLayout.WEST);
-        searchPanel.add(searchField, BorderLayout.CENTER);
+        topPanel.add(searchField);
+        topPanel.add(searchButton);
 
-        // Add components to frame
-        add(searchPanel, BorderLayout.NORTH);
-        add(scrollPane, BorderLayout.CENTER);
-        add(buttonPanel, BorderLayout.SOUTH);
+        paginationPanel.add(backButton);
+        prevButton = new JButton("Previous");
+        nextButton = new JButton("Next");
+        pageLabel = new JLabel("Page: " + currentPage);
+        
+        paginationPanel.add(prevButton);
+        paginationPanel.add(pageLabel);
+        paginationPanel.add(nextButton);
+
+        bottomPanel.add(paginationPanel, BorderLayout.NORTH);
+
+        panel.add(topPanel, BorderLayout.NORTH);
+        panel.add(tableScrollPane, BorderLayout.CENTER);
+        panel.add(bottomPanel, BorderLayout.SOUTH);
+
+        // Add panel to frame
+        add(panel);
+
+        // Load cases
+        loadCases("");
 
         // Button actions
-        previousButton.addActionListener(e -> {
+        searchButton.addActionListener(e -> {
+            String searchTerm = searchField.getText().trim();
+            currentPage = 1;
+            loadCases(searchTerm);
+        });
+
+        prevButton.addActionListener(e -> {
             if (currentPage > 1) {
                 currentPage--;
-                loadCases();
+                loadCases(searchField.getText().trim());
             }
         });
 
         nextButton.addActionListener(e -> {
-            currentPage++;
-            loadCases();
+            if (currentPage * pageSize < totalRows) {
+                currentPage++;
+                loadCases(searchField.getText().trim());
+            }
         });
 
         backButton.addActionListener(e -> {
             new CaseHistoryDetailsManagement().setVisible(true);
             this.dispose();
         });
-
-        // Load initial cases
-        loadCases();
     }
 
-    private void loadCases() {
-        casesPanel.removeAll();
-
+    private void loadCases(String searchTerm) {
+        tableModel.setRowCount(0);
         try (Connection connection = DatabaseConnection.getConnection()) {
-            String query = "SELECT * FROM cases WHERE case_details LIKE ? OR type_of_crime LIKE ? OR place_of_occurrence LIKE ? LIMIT ? OFFSET ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, "%" + searchQuery + "%");
-            preparedStatement.setString(2, "%" + searchQuery + "%");
-            preparedStatement.setString(3, "%" + searchQuery + "%");
-            preparedStatement.setInt(4, CASES_PER_PAGE);
-            preparedStatement.setInt(5, (currentPage - 1) * CASES_PER_PAGE);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            String query = "SELECT SQL_CALC_FOUND_ROWS * FROM cases WHERE case_details LIKE '%" + searchTerm + "%' " +
+                           "OR type_of_crime LIKE '%" + searchTerm + "%' " +
+                           "OR place_of_occurrence LIKE '%" + searchTerm + "%' " +
+                           "LIMIT " + (currentPage - 1) * pageSize + ", " + pageSize;
+
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
-                String caseDetails = resultSet.getString("case_details");
-                java.sql.Date dateOfOccurrence = resultSet.getDate("date_of_occurrence");
-                String typeOfCrime = resultSet.getString("type_of_crime");
-                String placeOfOccurrence = resultSet.getString("place_of_occurrence");
-
-                JPanel casePanel = new JPanel(new GridLayout(4, 1));
-                casePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-                casePanel.add(new JLabel("Case Details: " + caseDetails));
-                casePanel.add(new JLabel("Date of Occurrence: " + dateOfOccurrence));
-                casePanel.add(new JLabel("Type of Crime: " + typeOfCrime));
-                casePanel.add(new JLabel("Place of Occurrence: " + placeOfOccurrence));
-
-                casesPanel.add(casePanel);
+                tableModel.addRow(new Object[]{
+                    resultSet.getInt("case_id"),
+                    resultSet.getString("case_details"),
+                    resultSet.getDate("date_of_occurrence"),
+                    resultSet.getString("type_of_crime"),
+                    resultSet.getString("place_of_occurrence")
+                });
             }
+
+            ResultSet countResultSet = statement.executeQuery("SELECT FOUND_ROWS()");
+            if (countResultSet.next()) {
+                totalRows = countResultSet.getInt(1);
+            }
+            updatePageLabel();
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "An error occurred while retrieving case details: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "An error occurred while retrieving cases: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             ex.printStackTrace();
         }
+    }
 
-        casesPanel.revalidate();
-        casesPanel.repaint();
+    private void updatePageLabel() {
+        pageLabel.setText("Page: " + currentPage + " / " + ((totalRows / pageSize) + 1));
     }
 
     public static void main(String[] args) {

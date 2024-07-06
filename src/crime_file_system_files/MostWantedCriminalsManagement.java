@@ -5,6 +5,7 @@ import java.awt.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+
 import jdbc.DatabaseConnection;
 
 public class MostWantedCriminalsManagement extends JFrame {
@@ -12,7 +13,7 @@ public class MostWantedCriminalsManagement extends JFrame {
     public MostWantedCriminalsManagement() {
         // Frame settings
         setTitle("Crime File System - Most Wanted Criminals Management");
-        setSize(400, 300);
+        setSize(600, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         
@@ -48,8 +49,10 @@ public class MostWantedCriminalsManagement extends JFrame {
         
         JButton addButton = new JButton("Add Most Wanted");
         JButton backButton = new JButton("Back");
+        JButton viewButton = new JButton("View Most Wanted Records");
         
         buttonsPanel.add(addButton);
+        buttonsPanel.add(viewButton);
         buttonsPanel.add(backButton);
         
         mainPanel.add(buttonsPanel, BorderLayout.SOUTH);
@@ -82,7 +85,12 @@ public class MostWantedCriminalsManagement extends JFrame {
                 JOptionPane.showMessageDialog(null, "Failed to add most wanted criminal", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
-        
+
+        viewButton.addActionListener(e -> {
+            new ViewMostWantedCriminalRecord().setVisible(true);
+            this.dispose();
+        });
+
         backButton.addActionListener(e -> {
             new AdminUserPage().setVisible(true);
             this.dispose();

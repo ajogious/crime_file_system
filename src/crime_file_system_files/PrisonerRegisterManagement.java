@@ -5,6 +5,7 @@ import java.awt.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+
 import jdbc.DatabaseConnection;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
@@ -76,8 +77,10 @@ public class PrisonerRegisterManagement extends JFrame {
 
         JButton addButton = new JButton("Add Prisoner");
         JButton backButton = new JButton("Back");
+        JButton viewButton = new JButton("View Prisoners Records");
 
         buttonPanel.add(addButton);
+        buttonPanel.add(viewButton);
         buttonPanel.add(backButton);
 
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
@@ -110,6 +113,11 @@ public class PrisonerRegisterManagement extends JFrame {
                 JOptionPane.showMessageDialog(null, "An error occurred while adding the prisoner: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 ex.printStackTrace();
             }
+        });
+
+        viewButton.addActionListener(e -> {
+            new ViewPrisonersRecord().setVisible(true);
+            this.dispose();
         });
 
         backButton.addActionListener(e -> {
