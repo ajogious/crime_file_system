@@ -4,11 +4,11 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-public class AdminPage extends JFrame {
+public class AdminUserPage extends JFrame {
 
-    public AdminPage() {
+    public AdminUserPage() {
         // Frame settings
-        setTitle("Crime File System - Admin Page");
+        setTitle("Crime File System - Admin And User Page");
         setSize(400, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -94,6 +94,6 @@ public class AdminPage extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new AdminPage().setVisible(true));
+        SwingUtilities.invokeLater(() -> new AdminUserPage().setVisible(true));
     }
 }

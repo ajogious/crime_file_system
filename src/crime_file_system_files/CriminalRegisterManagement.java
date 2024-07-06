@@ -77,7 +77,7 @@ public class CriminalRegisterManagement extends JFrame {
         buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
         JButton addButton = new JButton("Add Criminal");
-        JButton backButton = new JButton("Back to Admin Page");
+        JButton backButton = new JButton("Back");
 
         buttonPanel.add(addButton);
         buttonPanel.add(backButton);
@@ -90,9 +90,23 @@ public class CriminalRegisterManagement extends JFrame {
         // Button actions
         addButton.addActionListener(e -> {
             String criminalNumber = criminalNumberText.getText();
-            int age = Integer.parseInt(ageText.getText());
+            String ageTextValue = ageText.getText();
             String occupation = occupationText.getText();
             String typeOfCrime = crimeTypeText.getText();
+
+            // Check if any field is empty
+            if (criminalNumber.isEmpty() || ageTextValue.isEmpty() || occupation.isEmpty() || typeOfCrime.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "All fields must be filled out", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            int age;
+            try {
+                age = Integer.parseInt(ageTextValue);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "Age must be a valid number", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
             try (Connection connection = DatabaseConnection.getConnection()) {
                 String query = "INSERT INTO criminals (criminal_number, age, occupation, type_of_crime) VALUES (?, ?, ?, ?)";
@@ -105,6 +119,7 @@ public class CriminalRegisterManagement extends JFrame {
                 preparedStatement.executeUpdate();
                 JOptionPane.showMessageDialog(null, "Criminal added successfully");
             } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "An error occurred while adding the criminal: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 ex.printStackTrace();
             }
         });

@@ -9,7 +9,6 @@ import jdbc.DatabaseConnection;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.SqlDateModel;
-
 import java.util.Properties;
 
 public class PostmortemDetailsManagement extends JFrame {
@@ -78,7 +77,7 @@ public class PostmortemDetailsManagement extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel.add(addButton, gbc);
 
-        JButton backButton = new JButton("Back to Admin Page");
+        JButton backButton = new JButton("Back");
         gbc.gridx = 1;
         gbc.gridy = 4;
         gbc.anchor = GridBagConstraints.CENTER;
@@ -94,6 +93,12 @@ public class PostmortemDetailsManagement extends JFrame {
             String causeOfDeath = causeText.getText();
             String doctorName = doctorText.getText();
 
+            // Validate fields
+            if (dateOfDeath == null || causeOfDeath.isEmpty() || doctorName.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "All fields must be filled out", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             try (Connection connection = DatabaseConnection.getConnection()) {
                 String query = "INSERT INTO postmortem (date_of_death, cause_of_death, doctor_name) VALUES (?, ?, ?)";
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -104,6 +109,7 @@ public class PostmortemDetailsManagement extends JFrame {
                 preparedStatement.executeUpdate();
                 JOptionPane.showMessageDialog(null, "Postmortem details added successfully");
             } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "An error occurred while adding the postmortem details: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 ex.printStackTrace();
             }
         });

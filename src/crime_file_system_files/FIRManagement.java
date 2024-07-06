@@ -48,7 +48,7 @@ public class FIRManagement extends JFrame {
         JTextField placeText = new JTextField(20);
 
         JButton addButton = new JButton("Add FIR");
-        JButton backButton = new JButton("Back to Admin Page");
+        JButton backButton = new JButton("Back");
 
         // Adding components to panel with layout constraints
         gbc.gridx = 0;
@@ -96,6 +96,12 @@ public class FIRManagement extends JFrame {
             java.sql.Date dateOfOccurrence = (java.sql.Date) datePicker.getModel().getValue();
             String placeOfOccurrence = placeText.getText();
 
+            // Validate fields
+            if (crimeDetails.isEmpty() || dateOfOccurrence == null || placeOfOccurrence.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "All fields must be filled out", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             try (Connection connection = DatabaseConnection.getConnection()) {
                 String query = "INSERT INTO firs (crime_details, date_of_occurrence, place_of_occurrence) VALUES (?, ?, ?)";
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -106,6 +112,7 @@ public class FIRManagement extends JFrame {
                 preparedStatement.executeUpdate();
                 JOptionPane.showMessageDialog(null, "FIR added successfully");
             } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "An error occurred while adding the FIR: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 ex.printStackTrace();
             }
         });

@@ -47,7 +47,7 @@ public class MostWantedCriminalsManagement extends JFrame {
         buttonsPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         
         JButton addButton = new JButton("Add Most Wanted");
-        JButton backButton = new JButton("Back to Admin Page");
+        JButton backButton = new JButton("Back");
         
         buttonsPanel.add(addButton);
         buttonsPanel.add(backButton);

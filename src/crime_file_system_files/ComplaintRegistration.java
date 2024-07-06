@@ -68,7 +68,7 @@ public class ComplaintRegistration extends JFrame {
         buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
         JButton registerButton = new JButton("Register");
-        JButton backButton = new JButton("Back to Admin Page");
+        JButton backButton = new JButton("Back");
 
         buttonPanel.add(registerButton);
         buttonPanel.add(backButton);
@@ -84,6 +84,12 @@ public class ComplaintRegistration extends JFrame {
             String victimDetails = victimText.getText();
             String crimeDetails = crimeText.getText();
 
+            // Check if any field is empty
+            if (incidentDetails.isEmpty() || victimDetails.isEmpty() || crimeDetails.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "All fields must be filled out", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             try (Connection connection = DatabaseConnection.getConnection()) {
                 String query = "INSERT INTO complaints (incident_details, victim_details, crime_details) VALUES (?, ?, ?)";
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -94,6 +100,7 @@ public class ComplaintRegistration extends JFrame {
                 preparedStatement.executeUpdate();
                 JOptionPane.showMessageDialog(null, "Complaint registered successfully");
             } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "An error occurred while registering the complaint: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 ex.printStackTrace();
             }
         });

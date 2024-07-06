@@ -9,7 +9,6 @@ import jdbc.DatabaseConnection;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.SqlDateModel;
-
 import java.util.Properties;
 
 public class PrisonerRegisterManagement extends JFrame {
@@ -76,7 +75,7 @@ public class PrisonerRegisterManagement extends JFrame {
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
         JButton addButton = new JButton("Add Prisoner");
-        JButton backButton = new JButton("Back to Admin Page");
+        JButton backButton = new JButton("Back");
 
         buttonPanel.add(addButton);
         buttonPanel.add(backButton);
@@ -92,6 +91,12 @@ public class PrisonerRegisterManagement extends JFrame {
             java.sql.Date dateOfImprisonment = (java.sql.Date) imprisonmentDatePicker.getModel().getValue();
             java.sql.Date releaseDate = (java.sql.Date) releaseDatePicker.getModel().getValue();
 
+            // Validate fields
+            if (name.isEmpty() || dateOfImprisonment == null || releaseDate == null) {
+                JOptionPane.showMessageDialog(null, "All fields must be filled out", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             try (Connection connection = DatabaseConnection.getConnection()) {
                 String query = "INSERT INTO prisoners (name, date_of_imprisonment, release_date) VALUES (?, ?, ?)";
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -102,6 +107,7 @@ public class PrisonerRegisterManagement extends JFrame {
                 preparedStatement.executeUpdate();
                 JOptionPane.showMessageDialog(null, "Prisoner added successfully");
             } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "An error occurred while adding the prisoner: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 ex.printStackTrace();
             }
         });

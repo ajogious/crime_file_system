@@ -47,7 +47,7 @@ public class CaseHistoryDetailsManagement extends JFrame {
         JLabel placeLabel = new JLabel("Place of Occurrence:");
         JTextField placeText = new JTextField(20);
         JButton addButton = new JButton("Add Case");
-        JButton backButton = new JButton("Back to Admin Page");
+        JButton backButton = new JButton("Back");
 
         // Adding components to panel
         gbc.gridx = 0;
@@ -97,6 +97,12 @@ public class CaseHistoryDetailsManagement extends JFrame {
             String typeOfCrime = crimeTypeText.getText();
             String placeOfOccurrence = placeText.getText();
 
+            // Check if any field is empty
+            if (caseDetails.isEmpty() || dateOfOccurrence == null || typeOfCrime.isEmpty() || placeOfOccurrence.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "All fields must be filled out", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             try (Connection connection = DatabaseConnection.getConnection()) {
                 String query = "INSERT INTO cases (case_details, date_of_occurrence, type_of_crime, place_of_occurrence) VALUES (?, ?, ?, ?)";
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -108,6 +114,7 @@ public class CaseHistoryDetailsManagement extends JFrame {
                 preparedStatement.executeUpdate();
                 JOptionPane.showMessageDialog(null, "Case details added successfully");
             } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "An error occurred while adding case details: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 ex.printStackTrace();
             }
         });

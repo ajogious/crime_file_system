@@ -26,7 +26,7 @@ public class ViewComplaintStatus extends JFrame {
         JTextField searchText = new JTextField("Enter Complaint ID");
         JButton searchButton = new JButton("Search");
         JTextArea resultArea = new JTextArea();
-        JButton backButton = new JButton("Back to Admin Page");
+        JButton backButton = new JButton("Back");
 
         // Placeholder text setup
         searchText.setForeground(Color.GRAY);
