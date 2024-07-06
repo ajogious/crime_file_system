@@ -77,9 +77,11 @@ public class CriminalRegisterManagement extends JFrame {
         buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
         JButton addButton = new JButton("Add Criminal");
+        JButton viewRecordButton = new JButton("View Criminal Record");
         JButton backButton = new JButton("Back");
 
         buttonPanel.add(addButton);
+        buttonPanel.add(viewRecordButton);
         buttonPanel.add(backButton);
 
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
@@ -124,8 +126,13 @@ public class CriminalRegisterManagement extends JFrame {
             }
         });
 
+        viewRecordButton.addActionListener(e -> {
+            new ViewCriminalRecord().setVisible(true);
+            this.dispose();
+        });
+
         backButton.addActionListener(e -> {
-            new AdminPage().setVisible(true);
+            new AdminUserPage().setVisible(true);
             this.dispose();
         });
     }

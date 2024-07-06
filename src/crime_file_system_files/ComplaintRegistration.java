@@ -68,9 +68,11 @@ public class ComplaintRegistration extends JFrame {
         buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
         JButton registerButton = new JButton("Register");
+        JButton viewComplaintButton = new JButton("View Complaint Status");
         JButton backButton = new JButton("Back");
 
         buttonPanel.add(registerButton);
+        buttonPanel.add(viewComplaintButton);
         buttonPanel.add(backButton);
 
         panel.add(buttonPanel, BorderLayout.SOUTH);
@@ -78,7 +80,7 @@ public class ComplaintRegistration extends JFrame {
         // Add panel to frame
         add(panel);
 
-        // Button action
+        // Button actions
         registerButton.addActionListener(e -> {
             String incidentDetails = incidentText.getText();
             String victimDetails = victimText.getText();
@@ -103,6 +105,11 @@ public class ComplaintRegistration extends JFrame {
                 JOptionPane.showMessageDialog(null, "An error occurred while registering the complaint: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 ex.printStackTrace();
             }
+        });
+
+        viewComplaintButton.addActionListener(e -> {
+            new ViewComplaintStatus().setVisible(true);
+            this.dispose();
         });
 
         backButton.addActionListener(e -> {

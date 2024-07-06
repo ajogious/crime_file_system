@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 import org.jdatepicker.impl.JDatePanelImpl;
@@ -12,11 +13,13 @@ import org.jdatepicker.impl.SqlDateModel;
 import jdbc.DatabaseConnection;
 
 public class CaseHistoryDetailsManagement extends JFrame {
+    private static final int CASES_PER_PAGE = 10; // Number of cases per page
+    private int currentPage = 1; // Current page number
 
     public CaseHistoryDetailsManagement() {
         // Frame settings
         setTitle("Crime File System - Case History Details Management");
-        setSize(600, 400);
+        setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -47,6 +50,7 @@ public class CaseHistoryDetailsManagement extends JFrame {
         JLabel placeLabel = new JLabel("Place of Occurrence:");
         JTextField placeText = new JTextField(20);
         JButton addButton = new JButton("Add Case");
+        JButton viewButton = new JButton("View Cases");
         JButton backButton = new JButton("Back");
 
         // Adding components to panel
@@ -85,6 +89,10 @@ public class CaseHistoryDetailsManagement extends JFrame {
 
         gbc.gridx = 1;
         gbc.gridy = 5;
+        panel.add(viewButton, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 6;
         panel.add(backButton, gbc);
 
         // Add panel to frame
@@ -117,6 +125,11 @@ public class CaseHistoryDetailsManagement extends JFrame {
                 JOptionPane.showMessageDialog(null, "An error occurred while adding case details: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 ex.printStackTrace();
             }
+        });
+
+        viewButton.addActionListener(e -> {
+            new ViewCasesPage().setVisible(true);
+            this.dispose();
         });
 
         backButton.addActionListener(e -> {

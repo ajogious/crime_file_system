@@ -8,22 +8,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import jdbc.DatabaseConnection;
 
-public class ViewComplaintStatus extends JFrame {
+public class ViewCriminalRecord extends JFrame {
 
-    public ViewComplaintStatus() {
+    public ViewCriminalRecord() {
         // Frame settings
-        setTitle("Crime File System - View Complaint Status");
-        setSize(800, 600);
+        setTitle("Crime File System - View Criminal Record");
+        setSize(600, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // Panel and layout
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
+        // Main panel
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout());
 
         // Components
-        JLabel searchLabel = new JLabel("Enter Complaint ID:");
-        JTextField searchText = new JTextField("Enter Complaint ID");
+        JLabel searchLabel = new JLabel("Enter Criminal Number:");
+        JTextField searchText = new JTextField("Enter Criminal Number");
         JButton searchButton = new JButton("Search");
         JTextArea resultArea = new JTextArea();
         JButton backButton = new JButton("Back");
@@ -32,7 +32,7 @@ public class ViewComplaintStatus extends JFrame {
         searchText.setForeground(Color.GRAY);
         searchText.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                if (searchText.getText().equals("Enter Complaint ID")) {
+                if (searchText.getText().equals("Enter Criminal Number")) {
                     searchText.setText("");
                     searchText.setForeground(Color.BLACK);
                 }
@@ -41,7 +41,7 @@ public class ViewComplaintStatus extends JFrame {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 if (searchText.getText().isEmpty()) {
                     searchText.setForeground(Color.GRAY);
-                    searchText.setText("Enter Complaint ID");
+                    searchText.setText("Enter Criminal Number");
                 }
             }
         });
@@ -59,52 +59,54 @@ public class ViewComplaintStatus extends JFrame {
         resultPanel.add(new JScrollPane(resultArea), BorderLayout.CENTER);
 
         // Add components to main panel
-        panel.add(searchPanel, BorderLayout.NORTH);
-        panel.add(resultPanel, BorderLayout.CENTER);
+        mainPanel.add(searchPanel, BorderLayout.NORTH);
+        mainPanel.add(resultPanel, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(backButton);
 
-        panel.add(buttonPanel, BorderLayout.SOUTH);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
-        // Add panel to frame
-        add(panel);
+        // Add main panel to frame
+        add(mainPanel);
 
         // Button actions
         searchButton.addActionListener(e -> {
-            String complaintID = searchText.getText();
+            String criminalNumber = searchText.getText();
 
-            if (complaintID.equals("Enter Complaint ID") || complaintID.trim().isEmpty()) {
-                resultArea.setText("Please enter a valid complaint ID.");
+            if (criminalNumber.equals("Enter Criminal Number") || criminalNumber.trim().isEmpty()) {
+                resultArea.setText("Please enter a valid criminal number.");
                 return;
             }
 
             try (Connection connection = DatabaseConnection.getConnection()) {
-                String query = "SELECT * FROM complaints WHERE complaint_id = ?";
+                String query = "SELECT * FROM criminals WHERE criminal_number = ?";
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
-                preparedStatement.setString(1, complaintID);
+                preparedStatement.setString(1, criminalNumber);
                 ResultSet resultSet = preparedStatement.executeQuery();
 
                 if (resultSet.next()) {
-                    String status = resultSet.getString("status");
-                    String details = resultSet.getString("crime_details");
-                    resultArea.setText("Complaint ID: " + complaintID + "\nStatus: " + status + "\nDetails: " + details);
+                    String age = resultSet.getString("age");
+                    String occupation = resultSet.getString("occupation");
+                    String typeOfCrime = resultSet.getString("type_of_crime");
+                    resultArea.setText("Criminal Number: " + criminalNumber + "\nAge: " + age + "\nOccupation: " + occupation + "\nType of Crime: " + typeOfCrime);
                 } else {
-                    resultArea.setText("No complaint found with ID: " + complaintID);
+                    resultArea.setText("No criminal found with number: " + criminalNumber);
                 }
             } catch (SQLException ex) {
-                resultArea.setText("Error retrieving complaint status.");
+                resultArea.setText("Error retrieving criminal record.");
+                ex.printStackTrace();
             }
         });
 
         backButton.addActionListener(e -> {
-            new ComplaintRegistration().setVisible(true);
+            new CriminalRegisterManagement().setVisible(true);
             this.dispose();
         });
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new ViewComplaintStatus().setVisible(true));
+        SwingUtilities.invokeLater(() -> new ViewCriminalRecord().setVisible(true));
     }
 }

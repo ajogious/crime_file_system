@@ -48,6 +48,7 @@ public class FIRManagement extends JFrame {
         JTextField placeText = new JTextField(20);
 
         JButton addButton = new JButton("Add FIR");
+        JButton viewRecordsButton = new JButton("View FIR Records");
         JButton backButton = new JButton("Back");
 
         // Adding components to panel with layout constraints
@@ -83,6 +84,11 @@ public class FIRManagement extends JFrame {
         gbc.gridx = 1;
         gbc.gridy = 4;
         gbc.anchor = GridBagConstraints.LINE_START;
+        formPanel.add(viewRecordsButton, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 5;
+        gbc.anchor = GridBagConstraints.LINE_START;
         formPanel.add(backButton, gbc);
 
         mainPanel.add(formPanel, BorderLayout.CENTER);
@@ -115,6 +121,11 @@ public class FIRManagement extends JFrame {
                 JOptionPane.showMessageDialog(null, "An error occurred while adding the FIR: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 ex.printStackTrace();
             }
+        });
+
+        viewRecordsButton.addActionListener(e -> {
+            new ViewFirRecord().setVisible(true);
+            this.dispose();
         });
 
         backButton.addActionListener(e -> {
